@@ -12,9 +12,8 @@ const s3 = new AWS.S3({
     secretAccessKey: AWS_CONFIG.SECRET
 });
 
-var fileName='casa.png';
 
-const uploadFile = (fileName) => {
+ uploadFile= (fileName) =>{
     // Leer el contenido desde el archivo
     const fileContent = fs.readFileSync(fileName);
 
@@ -29,16 +28,16 @@ const uploadFile = (fileName) => {
     };
 
     // Subir el archivo a S3
-    s3.upload(params, function(err, data) {
-        if (err) {
-            throw err;
-        }
-        console.log(`Archivo subido correctamente. ${data.Location}`);
-    });
+    var upload = s3.upload(params);
+    return upload.promise();
+
 };
 
+uploadFile('casa.png').then(function(res) { 
+    console.log(`Archivo subido correctamente. ${res.Location}`); 
+}, function(err) { 
+    throw err; 
+});
 
-//subimos arhivo
-uploadFile('casa.png');
 
 
